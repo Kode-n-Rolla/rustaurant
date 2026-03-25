@@ -2,9 +2,11 @@ pub struct Restaurant {
     pub tick: u32,
     pub status: RestaurantStatus,
     pub tables: Vec<Table>,
-    pub waiting_queue: Vec<GuestGroup>
+    pub waiting_queue: Vec<GuestGroup>,
+    pub occupy_tables: Vec<u32>
 }
 
+#[derive(Debug)]
 pub struct Table {
     pub id: u32,
     pub capacity: u8,
@@ -16,8 +18,8 @@ pub struct GuestGroup {
     pub size: u8,
 }
 
+#[derive(Debug, PartialEq)]
 pub enum RestaurantStatus {
     Open,
-    Closed
+    Closed,
 }
-
