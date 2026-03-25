@@ -180,12 +180,12 @@ Ticks allow simple logic:
 This is enough for the first version.
 ________________________________________
 ## Development stages
-### Stage 1 — Project skeleton
+### Stage 1 — Project skeleton (done)
 Done / in progress:
 - `cargo new`
 - create restaurant/ module directory
 - add mod.rs
-### Stage 2 — Data models
+### Stage 2 — Data models (done)
 Create initial structs and enums:
 - `Restaurant`
 - `Table`
@@ -208,7 +208,7 @@ Implement:
 Implement:
 - hardcoded table set
 - print tables
-- find suitable free table
+- find suitable free table <-- current here
 - seat guest groups
 ### Stage 5 — Queue
 Implement:
@@ -231,6 +231,7 @@ Improve:
 - more readable output
 - minor error handling improvements
 - better naming
+- polish codebase
 - optional release notes / changelog
 ________________________________________
 ## Learning focus per stage
