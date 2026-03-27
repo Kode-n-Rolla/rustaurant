@@ -88,19 +88,7 @@ pub fn suggest_waiting(restaurant: &mut Restaurant, count: u8) {
 }
 
 fn create_tables() -> Vec<Table> {
-    // 4 tables for 1 person
-    // let tables_for_1 = (1..=4).map(|id| Table {
-    //     id,
-    //     capacity: 1,
-    //     remaining_ticks: 0,
-    // });
-    // 4 tables for 2 person
-    // 4 tables for 3 person
-    // 3 tables for 4 person
-    // 2 tables for 5 person
-    // Total 17 tables
-
-    // table capacity -> count of tables
+// table capacity -> count of tables
     let tables_config = [
         (1, 4), // 4 tables for 1 person
         (2, 4), // 4 tables for 2 persons
