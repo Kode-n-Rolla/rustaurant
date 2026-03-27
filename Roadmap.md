@@ -197,18 +197,18 @@ Create initial structs and enums:
 Goal:
 - only define the data model
 - no complicated logic yet
-### Stage 3 — Basic application loop
+### Stage 3 — Basic application loop (done)
 Implement:
 - ask user whether to open restaurant
 - open restaurant
 - run basic loop
 - close restaurant
-- offer reopen / exit
-### Stage 4 — Tables and seating
+- offer reopen / exit (**not yet**) <----------
+### Stage 4 — Tables and seating (done)
 Implement:
 - hardcoded table set
 - print tables
-- find suitable free table <-- current here
+- find suitable free table
 - seat guest groups
 ### Stage 5 — Queue
 Implement:
@@ -221,7 +221,7 @@ Implement:
 - configurable service duration in ticks
 - decrement occupied table timers each turn
 - free tables when time expires
-### Stage 7 — Auto-seat queue
+### Stage 7 — Auto-seat queue <--- current here
 Implement:
 - after freeing tables, try seating queued groups automatically
 - print notifications when queue groups are seated
