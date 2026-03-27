@@ -13,6 +13,16 @@ pub struct Table {
     pub remaining_ticks: u32,
 }
 
+impl Table {
+    pub fn new(id: u32, capacity: u8) -> Self {
+        Self {
+            id,
+            capacity,
+            remaining_ticks: 0,
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct GuestGroup {
     pub id: u32,

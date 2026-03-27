@@ -1,13 +1,20 @@
-use std::io;
+use std::io::{self, Write};
 
 mod restaurant;
-use crate::restaurant::logic::{user_input_guest, create_rustaurant, find_table, tick};
+use crate::restaurant::logic::{
+    user_input_guest,
+    create_rustaurant,
+    find_table,
+    tick,
+    suggest_waiting};
 use crate::restaurant::model::{Restaurant, RestaurantStatus};
 
 fn main() {
     println!("Welcome to the Rustaurant");
 
-    println!("Open Rustaurant? (1 - yes, 0 - no)");
+    print!("Open Rustaurant? (1 - yes, 0 - no)\n> ");
+
+    io::stdout().flush().unwrap();
 
     let mut choice: String = String::new();
 
@@ -24,7 +31,7 @@ fn main() {
     };
 
     if choice == 1 {
-        let work_until: u32 = 5; //@todo user input
+        let work_until: u32 = 10; //@todo user input
         let mut restaurant = create_rustaurant();
         rustaurant_start(&mut restaurant, work_until);
     } else {
@@ -58,7 +65,7 @@ fn rustaurant_start(restaurant: &mut Restaurant, working: u32) {
         if table_id != 0 {
             println!("Guest sit at {} table", table_id);
         } else {
-            println!("Suggest waiting"); // @todo give a choice waiting or leave
+            suggest_waiting(restaurant, count);
         }
 
 
