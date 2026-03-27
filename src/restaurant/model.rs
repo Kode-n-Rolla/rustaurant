@@ -1,9 +1,9 @@
+#[derive(Debug)]
 pub struct Restaurant {
     pub tick: u32,
     pub status: RestaurantStatus,
     pub tables: Vec<Table>,
     pub waiting_queue: Vec<GuestGroup>,
-    pub occupy_tables: Vec<u32>
 }
 
 #[derive(Debug)]
@@ -13,6 +13,7 @@ pub struct Table {
     pub remaining_ticks: u32,
 }
 
+#[derive(Debug)]
 pub struct GuestGroup {
     pub id: u32,
     pub size: u8,

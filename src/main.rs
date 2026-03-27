@@ -1,7 +1,7 @@
 use std::io;
 
 mod restaurant;
-use crate::restaurant::logic::{user_input_guest, create_rustaurant, find_table};
+use crate::restaurant::logic::{user_input_guest, create_rustaurant, find_table, tick};
 use crate::restaurant::model::{Restaurant, RestaurantStatus};
 
 fn main() {
@@ -41,18 +41,28 @@ fn rustaurant_start(restaurant: &mut Restaurant, working: u32) {
     loop {
         println!("Working {} ticks", restaurant.tick);
 
+        // @todo tick impl in tick() for actions in tick, like decrease tables` `remaining_ticks`
+        tick(restaurant);
+
         if restaurant.tick >= working {
             restaurant.status = RestaurantStatus::Closed;
             println!("Rustaurant is closed");
             break;
         }
 
-        println!("Somebody come.");
+        println!("Somebody come."); // @todo but first ask come somebody or not
         let count: u8 = user_input_guest();
 
         // find table
-        find_table(restaurant, count);
+        let table_id = find_table(restaurant, count);
+        if table_id != 0 {
+            println!("Guest sit at {} table", table_id);
+        } else {
+            println!("Suggest waiting"); // @todo give a choice waiting or leave
+        }
+
 
         restaurant.tick += 1;
+        println!("Current status: {:#?}", restaurant);
     }
 }

@@ -29,17 +29,27 @@ pub fn create_rustaurant() -> Restaurant {
         status: RestaurantStatus::Open,
         tables,
         waiting_queue: vec![],
-        occupy_tables: vec![]
     };
 
     rustaurant
 }
 
-pub fn find_table(restaurant: &mut Restaurant, count_of_guests: u8) { 
-    for i in restaurant.tables.iter_mut() {
-        if i.capacity >= count_of_guests {
-            i.remaining_ticks = 2;
-            restaurant.occupy_tables.push(i.id);
+pub fn find_table(restaurant: &mut Restaurant, count_of_guests: u8) -> u32{ 
+    for table in restaurant.tables.iter_mut() {
+        if table.capacity >= count_of_guests && table.remaining_ticks == 0 {
+            table.remaining_ticks = 2;
+            return table.id;
+        }
+    }
+    
+    0 // @todo think about return Option
+}
+
+pub fn tick(restaurant: &mut Restaurant) {
+    for table in restaurant.tables.iter_mut() {
+        if table.remaining_ticks != 0 {
+            table.remaining_ticks -= 1;
+            //@todo add message, if table is free now
         }
     }
 }
