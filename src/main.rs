@@ -48,7 +48,6 @@ fn rustaurant_start(restaurant: &mut Restaurant, working: u32) {
     loop {
         println!("Working {} ticks", restaurant.tick);
 
-        // @todo tick impl in tick() for actions in tick, like decrease tables` `remaining_ticks`
         tick(restaurant);
 
         if restaurant.tick >= working {

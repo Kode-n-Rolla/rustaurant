@@ -1,6 +1,6 @@
 use std::io::{self, Write};
 
-use crate::restaurant::model::{GuestGroup, Restaurant, RestaurantStatus, Table};
+use crate::restaurant::{model::{GuestGroup, Restaurant, RestaurantStatus, Table}};
 
 pub fn user_input_guest() -> u8 {
 
@@ -21,6 +21,8 @@ pub fn user_input_guest() -> u8 {
         }
     };
 
+    //@todo add check for max 5 guests per group
+
     count
 }
 
@@ -39,7 +41,7 @@ pub fn create_rustaurant() -> Restaurant {
 pub fn find_table(restaurant: &mut Restaurant, count_of_guests: u8) -> u32 { 
     for table in restaurant.tables.iter_mut() {
         if table.capacity >= count_of_guests && table.remaining_ticks == 0 {
-            table.remaining_ticks = 2;
+            table.remaining_ticks = 4; //@todo move to restaurant config
             return table.id;
         }
     }
@@ -48,12 +50,20 @@ pub fn find_table(restaurant: &mut Restaurant, count_of_guests: u8) -> u32 {
 }
 
 pub fn tick(restaurant: &mut Restaurant) {
-    for table in restaurant.tables.iter_mut() {
-        if table.remaining_ticks != 0 {
+for table in restaurant.tables.iter_mut() {
+        if table.remaining_ticks > 0 {
             table.remaining_ticks -= 1;
             if table.remaining_ticks == 0 {
-                println!("{} is free.", table.id);
+                //println!("{} is free.", table.id);
             }
+        }
+    }
+
+    if !restaurant.waiting_queue.is_empty() {
+        let table = find_table(restaurant, restaurant.waiting_queue[0].size);
+        if table > 0 {
+            println!("Group {} id seat the {} table", restaurant.waiting_queue[0].id, table);
+            restaurant.waiting_queue.remove(0);
         }
     }
 }
@@ -90,10 +100,10 @@ pub fn suggest_waiting(restaurant: &mut Restaurant, count: u8) {
 fn create_tables() -> Vec<Table> {
 // table capacity -> count of tables
     let tables_config = [
-        (1, 4), // 4 tables for 1 person
-        (2, 4), // 4 tables for 2 persons
-        (3, 3), // 3 tables for 3 persons
-        (4, 2), // 2 tables for 4 persons
+        (1, 1), // 4 tables for 1 person
+        (2, 0), // 4 tables for 2 persons
+        (3, 0), // 3 tables for 3 persons
+        (4, 0), // 2 tables for 4 persons
         (5, 1), // 1 tables for 5 persons
     ];
     let mut tables: Vec<Table> = Vec::new();
