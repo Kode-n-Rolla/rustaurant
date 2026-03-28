@@ -203,11 +203,11 @@ Implement:
 - open restaurant
 - run basic loop
 - close restaurant
-- offer reopen / exit (**not yet**) <----------
+- offer reopen / exit (**not yet**) <-------------------
 ### Stage 4 — Tables and seating (done)
 Implement:
 - hardcoded table set
-- print tables
+- print tables (**not yet**) <-------------------
 - find suitable free table
 - seat guest groups
 ### Stage 5 — Queue
@@ -218,7 +218,7 @@ Implement:
 - store groups in waiting queue
 ### Stage 6 — Tick progression
 Implement:
-- configurable service duration in ticks
+- configurable service duration in ticks (make `remaining_tick` from user input) (**not yet**) <-------------------
 - decrement occupied table timers each turn
 - free tables when time expires
 ### Stage 7 — Auto-seat queue <--- current here
@@ -296,3 +296,14 @@ ________________________________________
 - restaurant closes at end of workday
 - user can reopen or exit
 
+________________________________________
+## After MVP version
+Potential post-MVP improvement:
+1. Introduce flexible queue seating to improve table utilization
+
+Description:
+- the MVP queue may use strict FIFO seating for simplicity and predictability
+- after MVP, the queue logic can be upgraded so that if the first waiting group does not fit any currently free table, the system may seat a later smaller group that does fit
+- this would improve occupancy efficiency and reduce idle tables, but it adds more complex queue-processing rules and should be treated as a deliberate product decision rather than part of the first version
+
+2. Can invite more than 5 people per group and for 6 people suggest to take 2 tables and connect them
