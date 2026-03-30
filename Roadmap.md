@@ -203,7 +203,7 @@ Implement:
 - open restaurant
 - run basic loop
 - close restaurant
-- offer reopen / exit (**not yet**) <-------------------
+- offer reopen / exit
 ### Stage 4 — Tables and seating (done)
 Implement:
 - hardcoded table set
@@ -218,14 +218,14 @@ Implement:
 - store groups in waiting queue
 ### Stage 6 — Tick progression
 Implement:
-- configurable service duration in ticks (make `remaining_tick` from user input) (**not yet**) <-------------------
+- configurable service duration in ticks (impl via `const`)
 - decrement occupied table timers each turn
 - free tables when time expires
-### Stage 7 — Auto-seat queue <--- current here
+### Stage 7 — Auto-seat queue
 Implement:
 - after freeing tables, try seating queued groups automatically
 - print notifications when queue groups are seated
-### Stage 8 — Refactor and polish
+### Stage 8 — Refactor and polish <--- current here
 Improve:
 - cleaner module boundaries
 - more readable output
@@ -307,3 +307,5 @@ Description:
 - this would improve occupancy efficiency and reduce idle tables, but it adds more complex queue-processing rules and should be treated as a deliberate product decision rather than part of the first version
 
 2. Can invite more than 5 people per group and for 6 people suggest to take 2 tables and connect them
+
+3. Continue `tick`, if occupy tables exist
