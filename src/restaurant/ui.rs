@@ -1,93 +1,136 @@
 use std::io::{self, Write};
 use crate::restaurant::{model::{GuestGroup, Restaurant}};
 
-pub fn user_start_interaction() -> u8{
-    print!("Open Rustaurant? (1 - yes, 0 - no)\n> ");
+const MAX_GROUP_VALUE: u8 = 5;
 
-    io::stdout().flush().unwrap();
-
-    let mut choice: String = String::new();
-
-    io::stdin()
-        .read_line(&mut choice)
-        .expect("Failed to understand");
-
-    let choice: u8 = match choice.trim().parse() {
-        Ok(ch) => ch,
-        Err(_) => {
-            println!("Invalid input");
-            return 0;
+pub fn user_start_interaction() -> bool {
+    loop {
+        print!("Open Rustaurant? (1 - yes, 0 - no)\n> ");
+    
+        io::stdout().flush().unwrap();
+    
+        let mut choice_input: String = String::new();
+    
+        io::stdin()
+            .read_line(&mut choice_input)
+            .expect("Failed to understand");
+    
+        match choice_input.trim().parse::<u8>() {
+            Ok(status) => {
+                if status == 1 {
+                    return true;
+                } else if status == 0{
+                    return false;
+                } else {
+                    println!("Please enter a valid choice.");
+                    continue;
+                }
+            },
+            Err(_) => {
+                println!("Please enter a valid choice.");
+                continue;
+            }
         }
-    };
-
-    choice
+    }
 }
 
 pub fn is_someone_come() -> bool {
-    print!("Is someone come? 1 - yes, 0 - no\n> ");
-
-    io::stdout().flush().unwrap();
-
-    let mut status = String::new();
-
-    io::stdin()
-        .read_line(&mut status)
-        .expect("Failed input");
-
-    let status: bool = status.trim().parse::<i32>().unwrap_or(0) == 1;
-
-    status
+    loop {
+        print!("Has anyone arrived? 1 - yes, 0 - no\n> ");
+    
+        io::stdout().flush().unwrap();
+    
+        let mut status_input = String::new();
+    
+        io::stdin()
+            .read_line(&mut status_input)
+            .expect("Failed input");
+    
+        match status_input.trim().parse::<u8>() {
+            Ok(status) => {
+                if status == 1 {
+                    return true;
+                } else if status == 0 {
+                    return false;
+                } else {
+                    println!("Please enter a valid choice.");
+                    continue;
+                }
+            },
+            Err(_) => {
+                println!("Please enter a valid choice.");
+                continue;
+            }
+        }
+    }
 }
 
 pub fn user_input_guest() -> u8 {
-
-    print!("Input count of guest(s)\n> ");
-
-    io::stdout().flush().unwrap();
-
-    let mut count = String::new();
-
-    io::stdin()
-        .read_line(&mut count)
-        .expect("Failed input");
-
-    let count: u8 = match count.trim().parse() {
-        Ok(c) => c,
-        Err(_) => {
-            return 0; // @todo imlp error handling
-        }
-    };
-
-    //@todo add check for max 5 guests per group
-
-    count
+    loop {
+        print!("Enter the number of guest(s)\n> ");
+    
+        io::stdout().flush().unwrap();
+    
+        let mut count_input = String::new();
+    
+        io::stdin()
+            .read_line(&mut count_input)
+            .expect("Failed input");
+    
+        match count_input.trim().parse() {
+            Ok(count) => {
+                if count == 0 {
+                    println!("The group size must be at least 1.");
+                    continue;
+                } else if count > MAX_GROUP_VALUE {
+                    println!("The maximum group size is {}", MAX_GROUP_VALUE);
+                    continue;
+                } else {
+                    return count;
+                }
+            },
+            Err(_) => {
+                println!("Please enter a valid number.");
+                continue;
+            }
+        };
+    }
 }
 
 pub fn suggest_waiting(restaurant: &mut Restaurant, count: u8) {
-    print!("No free tables. Would you like to wait? (1 - yes, 0 - no)\n> ");
+    println!("No free tables.");
 
-    io::stdout().flush().unwrap();
+    loop {
+        print!("Would you like to wait? (1 - yes, 0 - no)\n> ");
 
-    let mut choice = String::new();
+        io::stdout().flush().unwrap();
+    
+        let mut choice_input = String::new();
+    
+        io::stdin()
+            .read_line(&mut choice_input)
+            .expect("Invalid input");
 
-    io::stdin()
-        .read_line(&mut choice)
-        .expect("Invalid input");
-
-    let choice: u8 = match choice.trim().parse() {
-        Ok(ch) => ch,
-        Err(_) => {
-            println!("Invalid input");
-            return;
+        match choice_input.trim().parse::<u8>() {
+            Ok(choice) => {
+                if choice == 1 {
+                    let id: u32 = restaurant.waiting_queue.len() as u32;
+                    restaurant.waiting_queue.push(
+                        GuestGroup{id: id + 1, size: count});
+                        println!("You are number {} in the queue", id + 1);
+                        break;
+                } else if choice == 0 {
+                    println!("We are sorry to hear that. Have a nice day!");
+                    break;
+                } else {
+                    println!("Please enter a valid choice");
+                    continue;
+                }
+            },
+            Err(_) => {
+                println!("Please enter a valid choice");
+                continue;
+            }
         }
-    };
-
-    if choice == 1 {
-        let id: u32 = restaurant.waiting_queue.len() as u32;
-        restaurant.waiting_queue.push(
-            GuestGroup{id: id + 1, size: count});
-            println!("You are the {} in queue", id + 1);
-    } else {
-        println!("It`s a pity. Have a nice day");
     }
 }
