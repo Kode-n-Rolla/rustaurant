@@ -1,39 +1,25 @@
-use std::io::{self, Write};
-
 mod restaurant;
-use crate::restaurant::logic::{
+use crate::restaurant::ui::{
+    is_someone_come,
+    suggest_waiting,
     user_input_guest,
+    user_start_interaction};
+use crate::restaurant::logic::{
     create_rustaurant,
     find_table,
     tick,
-    suggest_waiting};
+};
 use crate::restaurant::model::{Restaurant, RestaurantStatus};
 
 fn main() {
     println!("Welcome to the Rustaurant");
 
-    print!("Open Rustaurant? (1 - yes, 0 - no)\n> ");
-
-    io::stdout().flush().unwrap();
-
-    let mut choice: String = String::new();
-
-    io::stdin()
-        .read_line(&mut choice)
-        .expect("Failed to understand");
-
-    let choice: u8 = match choice.trim().parse() {
-        Ok(ch) => ch,
-        Err(_) => {
-            println!("Invalid input");
-            return;
-        }
-    };
+    let choice = user_start_interaction();
 
     if choice == 1 {
-        let work_until: u32 = 10; //@todo user input
+        const WORK_UNTIL: u32 = 10; //@todo (?) user input
         let mut restaurant = create_rustaurant();
-        rustaurant_start(&mut restaurant, work_until);
+        rustaurant_start(&mut restaurant, WORK_UNTIL);
     } else {
         println!("Rustaurant is closed");
     }
@@ -56,17 +42,21 @@ fn rustaurant_start(restaurant: &mut Restaurant, working: u32) {
             break;
         }
 
-        println!("Somebody come."); // @todo but first ask come somebody or not
-        let count: u8 = user_input_guest();
-
-        // find table
-        let table_id = find_table(restaurant, count);
-        if table_id != 0 {
-            println!("Guest sit at {} table", table_id);
-        } else {
-            suggest_waiting(restaurant, count);
-        }
-
+        match is_someone_come() {
+            true => {
+                println!("Somebody come.");
+                let count: u8 = user_input_guest();
+        
+                // find table
+                let table_id = find_table(restaurant, count);
+                if table_id != 0 {
+                    println!("Guest sit at {} table", table_id);
+                } else {
+                    suggest_waiting(restaurant, count);
+                }
+            },
+            false => println!("No new guest(s)."),
+        };
 
         restaurant.tick += 1;
         println!("Current status: {:#?}", restaurant);

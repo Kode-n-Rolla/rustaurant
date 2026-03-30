@@ -1,32 +1,7 @@
-use std::io::{self, Write};
-
-use crate::restaurant::{model::{GuestGroup, Restaurant, RestaurantStatus, Table}};
-
-pub fn user_input_guest() -> u8 {
-
-    print!("Input count of guest(s)\n> ");
-
-    io::stdout().flush().unwrap();
-
-    let mut count = String::new();
-
-    io::stdin()
-        .read_line(&mut count)
-        .expect("Failed input");
-
-    let count: u8 = match count.trim().parse() {
-        Ok(c) => c,
-        Err(_) => {
-            return 0; // @todo imlp error handling
-        }
-    };
-
-    //@todo add check for max 5 guests per group
-
-    count
-}
+use crate::restaurant::{model::{Restaurant, RestaurantStatus, Table}};
 
 pub fn create_rustaurant() -> Restaurant {
+    // @todo think about `impl` with struct
     let tables = create_tables();
     let rustaurant = Restaurant {
         tick: 0,
@@ -68,37 +43,9 @@ for table in restaurant.tables.iter_mut() {
     }
 }
 
-pub fn suggest_waiting(restaurant: &mut Restaurant, count: u8) {
-    print!("No free tables. Would you like to wait? (1 - yes, 0 - no)\n> ");
-
-    io::stdout().flush().unwrap();
-
-    let mut choice = String::new();
-
-    io::stdin()
-        .read_line(&mut choice)
-        .expect("Invalid input");
-
-    let choice: u8 = match choice.trim().parse() {
-        Ok(ch) => ch,
-        Err(_) => {
-            println!("Invalid input");
-            return;
-        }
-    };
-
-    if choice == 1 {
-        let id: u32 = restaurant.waiting_queue.len() as u32;
-        restaurant.waiting_queue.push(
-            GuestGroup{id: id + 1, size: count});
-            println!("You are the {} in queue", id + 1);
-    } else {
-        println!("It`s a pity. Have a nice day");
-    }
-}
-
 fn create_tables() -> Vec<Table> {
 // table capacity -> count of tables
+    // @todo return default values after testing
     let tables_config = [
         (1, 1), // 4 tables for 1 person
         (2, 0), // 4 tables for 2 persons
