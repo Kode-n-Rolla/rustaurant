@@ -1,7 +1,7 @@
 use std::io::{self, Write};
 use crate::restaurant::{model::{GuestGroup, Restaurant}};
 
-const MAX_GROUP_VALUE: u8 = 5;
+const MAX_GROUP_SIZE: u8 = 5;
 
 pub fn user_start_interaction() -> bool {
     loop {
@@ -82,8 +82,8 @@ pub fn user_input_guest() -> u8 {
                 if count == 0 {
                     println!("The group size must be at least 1.");
                     continue;
-                } else if count > MAX_GROUP_VALUE {
-                    println!("The maximum group size is {}", MAX_GROUP_VALUE);
+                } else if count > MAX_GROUP_SIZE {
+                    println!("The maximum group size is {}", MAX_GROUP_SIZE);
                     continue;
                 } else {
                     return count;
