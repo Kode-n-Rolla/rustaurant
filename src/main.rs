@@ -11,17 +11,21 @@ use crate::restaurant::logic::{
 };
 use crate::restaurant::model::{Restaurant, RestaurantStatus};
 
+const WORK_UNTIL: u32 = 10;
+
 fn main() {
     println!("Welcome to the Rustaurant");
 
-    let choice = user_start_interaction();
-
-    if choice == 1 {
-        const WORK_UNTIL: u32 = 10; //@todo (?) user input
-        let mut restaurant = create_rustaurant();
-        rustaurant_start(&mut restaurant, WORK_UNTIL);
-    } else {
-        println!("Rustaurant is closed");
+    loop {
+        let choice = user_start_interaction();
+    
+        if choice {
+            let mut restaurant = create_rustaurant();
+            rustaurant_start(&mut restaurant, WORK_UNTIL);
+        } else {
+            println!("Rustaurant is closed");
+            break;
+        }
     }
 }
 
@@ -32,7 +36,7 @@ fn rustaurant_start(restaurant: &mut Restaurant, working: u32) {
 
     // Main work loop
     loop {
-        println!("Working {} ticks", restaurant.tick);
+        println!("Current tick {}", restaurant.tick);
 
         tick(restaurant);
 
@@ -44,18 +48,17 @@ fn rustaurant_start(restaurant: &mut Restaurant, working: u32) {
 
         match is_someone_come() {
             true => {
-                println!("Somebody come.");
+                println!("Someone arrived.");
                 let count: u8 = user_input_guest();
         
                 // find table
                 let table_id = find_table(restaurant, count);
-                if table_id != 0 {
-                    println!("Guest sit at {} table", table_id);
-                } else {
-                    suggest_waiting(restaurant, count);
+                match table_id {
+                    Some(table) => println!("Guests are seated at table {}", table),
+                    None => suggest_waiting(restaurant, count)
                 }
             },
-            false => println!("No new guest(s)."),
+            false => println!("No new guest(s) arrived."),
         };
 
         restaurant.tick += 1;

@@ -1,50 +1,51 @@
 use crate::restaurant::{model::{Restaurant, RestaurantStatus, Table}};
 
+const OCCUPAY_TABLE_FOR: u32 = 4;
+
 pub fn create_rustaurant() -> Restaurant {
-    // @todo think about `impl` with struct
     let tables = create_tables();
     let rustaurant = Restaurant {
         tick: 0,
         status: RestaurantStatus::Open,
         tables,
         waiting_queue: vec![],
+        next_guest_group_id: 1,
     };
 
     rustaurant
 }
 
-pub fn find_table(restaurant: &mut Restaurant, count_of_guests: u8) -> u32 { 
+pub fn find_table(restaurant: &mut Restaurant, count_of_guests: u8) -> Option<u32> { 
     for table in restaurant.tables.iter_mut() {
         if table.capacity >= count_of_guests && table.remaining_ticks == 0 {
-            table.remaining_ticks = 4; //@todo move to restaurant config
-            return table.id;
+            table.remaining_ticks = OCCUPAY_TABLE_FOR;
+            return Some(table.id);
         }
     }
     
-    0 // @todo think about return Option
+    None
 }
 
 pub fn tick(restaurant: &mut Restaurant) {
-for table in restaurant.tables.iter_mut() {
-        if table.remaining_ticks > 0 {
-            table.remaining_ticks -= 1;
-            if table.remaining_ticks == 0 {
-                //println!("{} is free.", table.id);
+    for table in restaurant.tables.iter_mut() {
+            if table.remaining_ticks > 0 {
+                table.remaining_ticks -= 1;
+                if table.remaining_ticks == 0 && restaurant.waiting_queue.is_empty() {
+                    println!("{} is free.", table.id);
+                }
             }
         }
-    }
 
     if !restaurant.waiting_queue.is_empty() {
-        let table = find_table(restaurant, restaurant.waiting_queue[0].size);
-        if table > 0 {
-            println!("Group {} id seat the {} table", restaurant.waiting_queue[0].id, table);
-            restaurant.waiting_queue.remove(0);
+        if let Some(table_id) = find_table(restaurant, restaurant.waiting_queue[0].size) {
+                println!("Group {} was seated at table {}", restaurant.waiting_queue[0].id, table_id);
+                restaurant.waiting_queue.remove(0);            
         }
     }
 }
 
 fn create_tables() -> Vec<Table> {
-// table capacity -> count of tables
+    // table capacity -> count of tables
     // @todo return default values after testing
     let tables_config = [
         (1, 1), // 4 tables for 1 person

@@ -114,10 +114,11 @@ pub fn suggest_waiting(restaurant: &mut Restaurant, count: u8) {
         match choice_input.trim().parse::<u8>() {
             Ok(choice) => {
                 if choice == 1 {
-                    let id: u32 = restaurant.waiting_queue.len() as u32;
+                    let id: u32 = restaurant.next_guest_group_id;
                     restaurant.waiting_queue.push(
-                        GuestGroup{id: id + 1, size: count});
-                        println!("You are number {} in the queue", id + 1);
+                        GuestGroup{id, size: count});
+                        println!("Your group id is {}", id);
+                        restaurant.next_guest_group_id += 1;
                         break;
                 } else if choice == 0 {
                     println!("We are sorry to hear that. Have a nice day!");

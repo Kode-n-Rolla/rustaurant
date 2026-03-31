@@ -4,6 +4,7 @@ pub struct Restaurant {
     pub status: RestaurantStatus,
     pub tables: Vec<Table>,
     pub waiting_queue: Vec<GuestGroup>,
+    pub next_guest_group_id: u32,
 }
 
 #[derive(Debug)]
