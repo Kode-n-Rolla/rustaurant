@@ -5,13 +5,13 @@ use crate::restaurant::ui::{
     user_input_guest,
     user_start_interaction};
 use crate::restaurant::logic::{
-    create_rustaurant,
+    create_restaurant,
     find_table,
     tick,
 };
 use crate::restaurant::model::{Restaurant, RestaurantStatus};
 
-const WORK_UNTIL: u32 = 10;
+const MAX_WORK_TICKS: u32 = 10;
 
 fn main() {
     println!("Welcome to the Rustaurant");
@@ -20,8 +20,8 @@ fn main() {
         let choice = user_start_interaction();
     
         if choice {
-            let mut restaurant = create_rustaurant();
-            rustaurant_start(&mut restaurant, WORK_UNTIL);
+            let mut restaurant = create_restaurant();
+            rustaurant_start(&mut restaurant, MAX_WORK_TICKS);
         } else {
             println!("Rustaurant is closed");
             break;
@@ -31,8 +31,6 @@ fn main() {
 
 fn rustaurant_start(restaurant: &mut Restaurant, working: u32) {
     println!("Rustaurant is open");
-
-    //println!("Tables {:?}", restaurant.tables);
 
     // Main work loop
     loop {
