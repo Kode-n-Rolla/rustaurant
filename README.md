@@ -4,6 +4,7 @@
 ![Rust](https://img.shields.io/badge/Rust-1.75%2B-orange)
 ![Build](https://img.shields.io/badge/build-passing-purple)
 ![License](https://img.shields.io/badge/license-Apache-green)
+![CLI](https://img.shields.io/badge/interface-CLI-blue)
 ![Status](https://img.shields.io/badge/status-learning--project-red)
 
 `Rustaurant` is a small console-based restaurant simulator written in Rust.
